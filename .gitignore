@@ -1,0 +1,4 @@
+.vscode
+bin
+*.jar
+!lib/*.jar
