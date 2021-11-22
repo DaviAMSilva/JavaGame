@@ -3,7 +3,7 @@ package davi.game;
 import processing.core.PConstants;
 import processing.core.PVector;
 
-public class Bar extends Entity {
+public class Bar extends GameObject {
     private int color = 0;
     private String text = "";
     private float percentage = 0;

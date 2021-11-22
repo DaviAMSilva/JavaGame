@@ -6,7 +6,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-
 public record GameData() {
     // Setting the variables
     public static final float MAX_STAT_VALUE = 100;
@@ -52,7 +51,9 @@ public record GameData() {
 
     public static PImage humanPlayerImage;
     public static PImage computerPlayerImage;
-    public static PImage[] backgroundAnimation;
+
+    public static PImage[] playingBackground;
+    public static PImage[] startingBackground;
 
     public static final Random random = new Random();
 

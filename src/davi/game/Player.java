@@ -2,7 +2,7 @@ package davi.game;
 
 import processing.core.PImage;
 
-public abstract class Player extends Entity implements Clickable {
+public abstract class Player extends GameObject implements Clickable {
     protected PImage image;
     protected String name;
     

@@ -2,22 +2,18 @@ package davi.game;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
-import gifAnimation.Gif;
 
 public class GameRenderer extends PApplet {
     @Override
     public synchronized void settings() {
         size((int) GameData.SIZE.x, (int) GameData.SIZE.y);
+    }
 
-        // Loading the images
-        try {
-            GameData.humanPlayerImage = loadImage("data/Human.png");
-            GameData.computerPlayerImage = loadImage("data/Computer.png");
-        } catch (Exception e) {
-            System.out.println("Error loading images");
-        }
-
-        GameData.backgroundAnimation = Gif.getPImages(this, "data/Background.gif");
+    @Override
+    public void setup() {
+        fill(0);
+        textAlign(PConstants.CENTER, PConstants.CENTER);
+        text("Loading background...", width / 2, height / 2);
     }
 
     @Override
@@ -32,9 +28,9 @@ public class GameRenderer extends PApplet {
     }
 
     private void drawStarting() {
-        // Drawing the background animation every 2 frames
-        image(GameData.backgroundAnimation[(frameCount / 2) % GameData.backgroundAnimation.length], 0, 0, width,
-                height);
+        if (GameData.startingBackground != null)
+            image(GameData.startingBackground[(frameCount / 2) % GameData.startingBackground.length], 0, 0, width,
+                    height);
 
         // Drawing the description
         textAlign(PConstants.LEFT, PConstants.CENTER);
@@ -50,9 +46,9 @@ public class GameRenderer extends PApplet {
             GameData.MOUSE_PRESSED = mousePressed;
         }
 
-        // Drawing the background animation every 2 frames
-        image(GameData.backgroundAnimation[(frameCount / 2) % GameData.backgroundAnimation.length], 0, 0, width,
-                height);
+        if (GameData.playingBackground != null)
+            image(GameData.playingBackground[(frameCount / 2) % GameData.playingBackground.length], 0, 0, width,
+                    height);
 
         for (Stat s : GameData.humanPlayer.getStats()) {
             s.draw(this);
@@ -70,8 +66,9 @@ public class GameRenderer extends PApplet {
     }
 
     private void drawEnding() {
-        image(GameData.backgroundAnimation[(frameCount / 2) % GameData.backgroundAnimation.length], 0, 0, width,
-                height);
+        if (GameData.playingBackground != null)
+            image(GameData.playingBackground[(frameCount / 2) % GameData.playingBackground.length], 0, 0, width,
+                    height);
 
         GameData.humanPlayer.draw(this);
         GameData.computerPlayer.draw(this);
@@ -96,6 +93,8 @@ public class GameRenderer extends PApplet {
                 GameData.state = GameState.STARTING;
             } else {
                 GameData.humanName += key;
+                if (GameData.humanName.length() > 20)
+                    GameData.humanName = GameData.humanName.substring(0, 20);
             }
         } else if (GameData.state == GameState.PLAYING) {
             // When the C key is pressed the energy of both players is set to 1

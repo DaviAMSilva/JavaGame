@@ -1,6 +1,6 @@
 package davi.game;
 
-public class TextBox extends Entity {
+public class TextBox extends GameObject {
     private String text;
 
     @Override

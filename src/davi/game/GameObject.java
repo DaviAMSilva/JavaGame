@@ -2,7 +2,7 @@ package davi.game;
 
 import processing.core.PVector;
 
-public abstract class Entity {
+public abstract class GameObject {
     protected PVector position = new PVector();
     protected PVector size = new PVector();
 

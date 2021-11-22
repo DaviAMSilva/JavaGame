@@ -3,7 +3,7 @@ package davi.game;
 import processing.core.PConstants;
 import processing.core.PVector;
 
-public class Button extends Entity implements Clickable {
+public class Button extends GameObject implements Clickable {
     private int color = 0;
     private String text = "";
 

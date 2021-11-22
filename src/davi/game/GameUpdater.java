@@ -1,12 +1,27 @@
 package davi.game;
 
+import gifAnimation.Gif;
 import processing.core.PApplet;
 
 public class GameUpdater extends PApplet {
     @Override
-    public synchronized void setup() {
+    public void setup() {
         // Hides the window
         surface.setVisible(false);
+    }
+    
+    @Override
+    public synchronized void settings() {
+        // Loading the images
+        try {
+            GameData.humanPlayerImage = loadImage("data/Human.png");
+            GameData.computerPlayerImage = loadImage("data/Computer.png");
+
+            GameData.playingBackground = Gif.getPImages(this, "data/PlayingBackground.gif");
+            GameData.startingBackground = Gif.getPImages(this, "data/StartingBackground.gif");
+        } catch (Exception e) {
+            System.out.println("Error loading images");
+        }
     }
 
     @Override
@@ -22,9 +37,9 @@ public class GameUpdater extends PApplet {
 
     private synchronized void namingDraw() {
         if ((frameCount / 60) % 2 == 0) {
-            GameData.descriptionText.setText("Qual o seu nome?: " + GameData.humanName + "_");
+            GameData.descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName + "_");
         } else {
-            GameData.descriptionText.setText("Qual o seu nome?: " + GameData.humanName);
+            GameData.descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName);
         }
     }
 
@@ -32,8 +47,7 @@ public class GameUpdater extends PApplet {
         if (GameData.humanName.equals("")) {
             GameData.humanPlayer.setName("HUMANO");
         } else {
-            // Only the 20 first characters are used
-            GameData.humanPlayer.setName(GameData.humanName.substring(0, Math.min(20, GameData.humanName.length())));
+            GameData.humanPlayer.setName(GameData.humanName);
         }
 
         GameData.descriptionText.setText("Que o jogo comece!");
