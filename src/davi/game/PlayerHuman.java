@@ -23,7 +23,7 @@ public class PlayerHuman extends Player {
     public synchronized TurnResult play(String turnType) {
         // Update the description
         GameData.descriptionText.setText("Próximo a jogar: " + name);
-        waitTime(1000);
+        waitTime(GameData.DEFAULT_DELAY);
         GameData.descriptionText.setText("Escolha sua jogada:");
 
         // Setting the visibility of the buttons based on the type of turn
@@ -56,7 +56,7 @@ public class PlayerHuman extends Player {
             throw new IllegalArgumentException("Invalid type: " + type);
 
         GameData.descriptionText.setText(name + " escolheu: " + turnType + " " + type + " (" + value + ")");
-        waitTime(1000);
+        waitTime(GameData.DEFAULT_DELAY);
 
         // For every stat decrease the value except for the one chosen
         for (Stat stat : stats) {

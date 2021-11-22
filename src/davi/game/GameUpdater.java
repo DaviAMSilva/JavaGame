@@ -2,6 +2,7 @@ package davi.game;
 
 import gifAnimation.Gif;
 import processing.core.PApplet;
+import processing.sound.SoundFile;
 
 public class GameUpdater extends PApplet {
     @Override
@@ -19,8 +20,11 @@ public class GameUpdater extends PApplet {
 
             GameData.playingBackground = Gif.getPImages(this, "data/PlayingBackground.gif");
             GameData.startingBackground = Gif.getPImages(this, "data/StartingBackground.gif");
+
+            GameData.music = new SoundFile(this, "data/09battle2.wav");
+            GameData.music.loop();
         } catch (Exception e) {
-            System.out.println("Error loading images");
+            System.out.println("Error loading data");
         }
     }
 
@@ -51,7 +55,7 @@ public class GameUpdater extends PApplet {
         }
 
         GameData.descriptionText.setText("Que o jogo comece!");
-        waitTime(2000);
+        waitTime(GameData.MEDIUM_DELAY);
 
         GameData.state = GameState.PLAYING;
     }
@@ -69,7 +73,7 @@ public class GameUpdater extends PApplet {
         }
 
         GameData.descriptionText.setText("Próxima rodada!");
-        waitTime(1000);
+        waitTime(GameData.DEFAULT_DELAY);
 
         TurnResult attackerResult = attacker.play(GameData.ATAQUE);
         TurnResult defenderResult = defender.play(GameData.DEFESA);
@@ -90,7 +94,7 @@ public class GameUpdater extends PApplet {
             GameData.descriptionText.setText(attacker.getName() + " atacou! (" + (attackerResult.getValue() / 3) + ")");
         }
 
-        waitTime(1000);
+        waitTime(GameData.DEFAULT_DELAY);
 
         for (Stat stat : attacker.getStats()) {
             stat.setButtonHighlighted(false);
@@ -112,7 +116,7 @@ public class GameUpdater extends PApplet {
 
             GameData.state = GameState.ENDING;
             
-            waitTime(5000);
+            waitTime(GameData.LONG_DELAY);
             
             GameData.descriptionText.setText("Obrigado por Jogar!!!");
         }

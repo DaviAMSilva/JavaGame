@@ -21,7 +21,7 @@ public class PlayerComputer extends Player {
     @Override
     public synchronized TurnResult play(String turnType) {
         GameData.descriptionText.setText("Próximo a jogar: " + name);
-        waitTime(1000);
+        waitTime(GameData.DEFAULT_DELAY);
 
         // Setting the visibility of the buttons based on the type of turn
         if (turnType.equals(GameData.ATAQUE)) {
@@ -43,7 +43,7 @@ public class PlayerComputer extends Player {
         defesaComum.setButtonHighlighted(false);
         defesaEspecial.setButtonHighlighted(false);
 
-        String type = GameData.random.nextBoolean() ? GameData.COMUM : GameData.ESPECIAL;
+        String type = "";
         float value = 0;
 
         Stat choice = null;
@@ -53,15 +53,19 @@ public class PlayerComputer extends Player {
                 // Choosing randomly
                 if (GameData.random.nextBoolean()) {
                     choice = this.ataqueComum;
+                    type = GameData.COMUM;
                 } else {
                     choice = this.ataqueEspecial;
+                    type = GameData.ESPECIAL;
                 }
             } else {
                 // Choosing the attack with the highest value
                 if (this.ataqueComum.getValue() > this.ataqueEspecial.getValue()) {
                     choice = this.ataqueComum;
+                    type = GameData.COMUM;
                 } else {
                     choice = this.ataqueEspecial;
+                    type = GameData.ESPECIAL;
                 }
             }
         } else if (turnType.equals(GameData.DEFESA)) {
@@ -69,15 +73,19 @@ public class PlayerComputer extends Player {
                 // Choosing randomly
                 if (GameData.random.nextBoolean()) {
                     choice = this.defesaComum;
+                    type = GameData.COMUM;
                 } else {
                     choice = this.defesaEspecial;
+                    type = GameData.ESPECIAL;
                 }
             } else {
                 // Choosing the attack with the highest value
                 if (this.defesaComum.getValue() > this.defesaEspecial.getValue()) {
                     choice = this.defesaComum;
+                    type = GameData.COMUM;
                 } else {
                     choice = this.defesaEspecial;
+                    type = GameData.ESPECIAL;
                 }
             }
         } else {
@@ -88,7 +96,7 @@ public class PlayerComputer extends Player {
         value = choice.getValue();
 
         GameData.descriptionText.setText(name + " escolheu: " + turnType + " " + type + " (" + value + ")");
-        waitTime(1000);
+        waitTime(GameData.DEFAULT_DELAY);
 
         // For every stat decrease the value except for the one chosen
         for (Stat stat : stats) {

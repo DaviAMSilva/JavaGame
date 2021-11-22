@@ -5,6 +5,7 @@ import java.util.Random;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
+import processing.sound.SoundFile;
 
 public record GameData() {
     // Setting the variables
@@ -36,6 +37,10 @@ public record GameData() {
     public static final int BAR_TEXT_SIZE = 10;
     public static final int TEXTBOX_TEXT_SIZE = 50;
 
+    public static final int DEFAULT_DELAY = 1500;
+    public static final int MEDIUM_DELAY = 2500;
+    public static final int LONG_DELAY = 5000;
+
     public static PVector MOUSE_POSITION = new PVector();
     public static Boolean MOUSE_PRESSED = false;
 
@@ -54,6 +59,8 @@ public record GameData() {
 
     public static PImage[] playingBackground;
     public static PImage[] startingBackground;
+
+    public static SoundFile music;
 
     public static final Random random = new Random();
 
