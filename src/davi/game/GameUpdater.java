@@ -10,7 +10,7 @@ public class GameUpdater extends PApplet {
         // Hides the window
         surface.setVisible(false);
     }
-    
+
     @Override
     public synchronized void settings() {
         // Loading the images
@@ -41,7 +41,8 @@ public class GameUpdater extends PApplet {
 
     private synchronized void namingDraw() {
         if ((frameCount / 60) % 2 == 0) {
-            GameData.descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName + "_");
+            GameData.descriptionText
+                    .setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName + "_");
         } else {
             GameData.descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName);
         }
@@ -107,17 +108,17 @@ public class GameUpdater extends PApplet {
         // If the defender has no energy, the attacker wins
         if (defender.getEnergyValue() <= 0) {
             GameData.descriptionText
-            .setText(defender.getName() + " foi eliminado! " + attacker.getName() + " é o vencedor!");
-            
+                    .setText(defender.getName() + " foi eliminado! " + attacker.getName() + " é o vencedor!");
+
             GameData.descriptionText.setPosition(GameData.SIZE.x / 2, GameData.SIZE.y / 2);
-            
+
             attacker.setState(GameData.GANHADOR);
             defender.setState(GameData.PERDEDOR);
 
             GameData.state = GameState.ENDING;
-            
+
             waitTime(GameData.LONG_DELAY);
-            
+
             GameData.descriptionText.setText("Obrigado por Jogar!!!");
         }
     }

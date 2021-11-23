@@ -67,6 +67,11 @@ public class PlayerHuman extends Player {
             }
         }
 
+        // Remove energy
+        if (type.equals(GameData.ESPECIAL)) {
+            energia.subtractValue(5);
+        }
+
         // Return the type/value to the game
         return new TurnResult(type, value);
     }
@@ -101,9 +106,9 @@ public class PlayerHuman extends Player {
 
     @Override
     public void draw(GameRenderer gr) {
-        if (state == GameData.GANHADOR) {
+        if (state.equals(GameData.GANHADOR)) {
             gr.tint(GameData.WINNER_TINT_COLOR);
-        } else if (state == GameData.PERDEDOR) {
+        } else if (state.equals(GameData.PERDEDOR)) {
             gr.tint(GameData.LOSER_TINT_COLOR);
         }
 

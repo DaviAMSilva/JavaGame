@@ -6,7 +6,7 @@ public class TextBox extends GameObject {
     @Override
     public void draw(GameRenderer gr) {
         gr.textSize(GameData.TEXTBOX_TEXT_SIZE);
-        
+
         // Makes a outline of the text
         gr.fill(GameData.TEXTBOX_TEXT_OUTLINE_COLOR);
         for (int i = -1; i <= 1; i += 2) {

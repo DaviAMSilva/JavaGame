@@ -2,25 +2,20 @@ package davi.game;
 
 import processing.core.PImage;
 
-public abstract class Player extends GameObject implements Clickable {
+public abstract class Player extends GameObject {
     protected PImage image;
     protected String name;
-    
+
     protected Stat ataqueComum;
     protected Stat ataqueEspecial;
     protected Stat defesaComum;
     protected Stat defesaEspecial;
     protected Stat energia;
-    
+
     protected String state = GameData.NORMAL;
     protected Stat[] stats = new Stat[5];
 
     public abstract TurnResult play(String turnType);
-
-    @Override
-    public boolean isInside(float x, float y) {
-        return x >= position.x && x <= position.x + size.x && y >= position.y && y <= position.y + size.y;
-    }
 
     protected Player(float x, float y, float width, float height, String name) {
         this.position.x = x;

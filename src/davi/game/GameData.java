@@ -17,9 +17,9 @@ public record GameData() {
     public static final int BAR_SPACING = 10;
 
     public static final int PLAYER_COLOR = new PApplet().color(255, 0, 0);
-    public static final int BAR_COLOR = new PApplet().color(0, 255, 0);
-    public static final int BAR_OFF_COLOR = new PApplet().color(200, 255, 200);
-    public static final int BUTTON_COLOR = new PApplet().color(0, 0, 255);
+    public static final int BAR_COLOR = new PApplet().color(0, 255, 127);
+    public static final int BAR_OFF_COLOR = new PApplet().color(200, 255, 255);
+    public static final int BUTTON_COLOR = new PApplet().color(0, 127, 255);
 
     public static final int BUTTON_TEXT_COLOR = new PApplet().color(255);
     public static final int BAR_TEXT_COLOR = new PApplet().color(0);

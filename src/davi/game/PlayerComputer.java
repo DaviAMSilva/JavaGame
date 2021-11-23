@@ -107,14 +107,19 @@ public class PlayerComputer extends Player {
             }
         }
 
+        // Remove energy
+        if (type.equals(GameData.ESPECIAL)) {
+            energia.subtractValue(5);
+        }
+
         return new TurnResult(type, value);
     }
 
     @Override
     public void draw(GameRenderer gr) {
-        if (state == GameData.GANHADOR) {
+        if (state.equals(GameData.GANHADOR)) {
             gr.tint(GameData.WINNER_TINT_COLOR);
-        } else if (state == GameData.PERDEDOR) {
+        } else if (state.equals(GameData.PERDEDOR)) {
             gr.tint(GameData.LOSER_TINT_COLOR);
         }
 

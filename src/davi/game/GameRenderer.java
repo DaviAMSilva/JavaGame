@@ -13,7 +13,8 @@ public class GameRenderer extends PApplet {
     public void setup() {
         fill(0);
         textAlign(PConstants.CENTER, PConstants.CENTER);
-        text("Loading background...", width / 2, height / 2);
+        text("Loading data...", width / 2.0f, height / 2.0f);
+        surface.setTitle("Game");
     }
 
     @Override
@@ -38,6 +39,7 @@ public class GameRenderer extends PApplet {
     }
 
     private void drawPlaying() {
+        // Synchronizing because otherwise it causes problems
         synchronized (GameData.MOUSE_POSITION) {
             GameData.MOUSE_POSITION.x = mouseX;
             GameData.MOUSE_POSITION.y = mouseY;
@@ -97,9 +99,9 @@ public class GameRenderer extends PApplet {
                     GameData.humanName = GameData.humanName.substring(0, 20);
             }
         } else if (GameData.state == GameState.PLAYING) {
-            // When the C key is pressed the energy of both players is set to 1
+            // When the SPACE key is pressed the energy of both players is set to 1
             // Only for testing of course :)
-            if (key == 'c') {
+            if (key == ' ') {
                 GameData.humanPlayer.setEnergyValue(1);
                 GameData.computerPlayer.setEnergyValue(1);
             }

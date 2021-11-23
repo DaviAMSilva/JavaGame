@@ -24,7 +24,7 @@ public class Bar extends GameObject {
         gr.noStroke();
         gr.fill(GameData.BAR_OFF_COLOR);
         gr.rect(position.x, position.y, size.x, size.y);
-        
+
         // Draw a rectangle proportional to the percentage
         gr.fill(color);
         gr.rect(position.x, position.y, size.x * percentage, size.y);
