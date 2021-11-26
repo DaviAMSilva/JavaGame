@@ -60,12 +60,4 @@ public abstract class Player extends GameObject {
     public void subtractEnergy(float value) {
         this.energia.subtractValue(value);
     }
-
-    public void waitTime(int millisecond) {
-        try {
-            Thread.sleep(millisecond);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

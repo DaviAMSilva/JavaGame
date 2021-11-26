@@ -1,19 +1,17 @@
 package davi.game;
 
+import static davi.game.GameData.*;
+
 public class PlayerHuman extends Player {
 
     public PlayerHuman(float x, float y, float width, float height, String name) {
         super(x, y, width, height, name);
 
-        this.stats[0] = this.ataqueComum = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Ataque Comum");
-        this.stats[1] = this.ataqueEspecial = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Ataque Especial");
-        this.stats[2] = this.defesaComum = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Defesa Comum");
-        this.stats[3] = this.defesaEspecial = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Defesa Especial");
-        this.stats[4] = this.energia = new Stat(GameData.MAX_STAT_VALUE, GameData.MAX_STAT_VALUE, "Energia");
+        this.stats[0] = this.ataqueComum = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Ataque Comum");
+        this.stats[1] = this.ataqueEspecial = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Ataque Especial");
+        this.stats[2] = this.defesaComum = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Defesa Comum");
+        this.stats[3] = this.defesaEspecial = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Defesa Especial");
+        this.stats[4] = this.energia = new Stat(MAX_STAT_VALUE, MAX_STAT_VALUE, "Energia");
 
         // We don't need the energy button
         this.energia.setButton(null);
@@ -22,17 +20,17 @@ public class PlayerHuman extends Player {
     @Override
     public synchronized TurnResult play(String turnType) {
         // Update the description
-        GameData.descriptionText.setText("Próximo a jogar: " + name);
-        waitTime(GameData.DEFAULT_DELAY);
-        GameData.descriptionText.setText("Escolha sua jogada:");
+        gd_descriptionText.setText("Próximo a jogar: " + name);
+        waitTime(DEFAULT_DELAY);
+        gd_descriptionText.setText("Escolha sua jogada:");
 
         // Setting the visibility of the buttons based on the type of turn
-        if (turnType.equals(GameData.ATAQUE)) {
+        if (turnType.equals(ATAQUE)) {
             this.defesaComum.setButtonVisible(false);
             this.defesaEspecial.setButtonVisible(false);
             this.ataqueComum.setButtonVisible(true);
             this.ataqueEspecial.setButtonVisible(true);
-        } else if (turnType.equals(GameData.DEFESA)) {
+        } else if (turnType.equals(DEFESA)) {
             this.ataqueComum.setButtonVisible(false);
             this.ataqueEspecial.setButtonVisible(false);
             this.defesaComum.setButtonVisible(true);
@@ -49,14 +47,14 @@ public class PlayerHuman extends Player {
         float value = choice.getValue();
 
         if (choice == this.ataqueComum || choice == this.defesaComum)
-            type = GameData.COMUM;
+            type = COMUM;
         else if (choice == this.ataqueEspecial || choice == this.defesaEspecial)
-            type = GameData.ESPECIAL;
+            type = ESPECIAL;
         else
             throw new IllegalArgumentException("Invalid type: " + type);
 
-        GameData.descriptionText.setText(name + " escolheu: " + turnType + " " + type + " (" + value + ")");
-        waitTime(GameData.DEFAULT_DELAY);
+        gd_descriptionText.setText(name + " escolheu: " + turnType + " " + type + " (" + value + ")");
+        waitTime(DEFAULT_DELAY);
 
         // For every stat decrease the value except for the one chosen
         for (Stat stat : stats) {
@@ -68,7 +66,7 @@ public class PlayerHuman extends Player {
         }
 
         // Remove energy
-        if (type.equals(GameData.ESPECIAL)) {
+        if (type.equals(ESPECIAL)) {
             energia.subtractValue(5);
         }
 
@@ -83,13 +81,13 @@ public class PlayerHuman extends Player {
         while (choice == null) {
             for (Stat stat : this.stats) {
                 // Test if the mouse is over the button
-                synchronized (GameData.MOUSE_POSITION) {
-                    if (stat.isButtonInside(GameData.MOUSE_POSITION.x, GameData.MOUSE_POSITION.y)) {
+                synchronized (gd_mousePosition) {
+                    if (stat.isButtonInside(gd_mousePosition.x, gd_mousePosition.y)) {
                         stat.setButtonHighlighted(true);
 
                         // Test if the mouse is pressed
-                        synchronized (GameData.MOUSE_PRESSED) {
-                            if (Boolean.TRUE.equals(GameData.MOUSE_PRESSED)) {
+                        synchronized (gd_mousePressed) {
+                            if (Boolean.TRUE.equals(gd_mousePressed)) {
                                 choice = stat;
                                 break;
                             }
@@ -106,13 +104,13 @@ public class PlayerHuman extends Player {
 
     @Override
     public void draw(GameRenderer gr) {
-        if (state.equals(GameData.GANHADOR)) {
-            gr.tint(GameData.WINNER_TINT_COLOR);
-        } else if (state.equals(GameData.PERDEDOR)) {
-            gr.tint(GameData.LOSER_TINT_COLOR);
+        if (state.equals(GANHADOR)) {
+            gr.tint(WINNER_TINT_COLOR);
+        } else if (state.equals(PERDEDOR)) {
+            gr.tint(LOSER_TINT_COLOR);
         }
 
-        gr.image(GameData.humanPlayerImage, position.x, position.y, size.x, size.y);
+        gr.image(gd_humanPlayerImage, position.x, position.y, size.x, size.y);
 
         super.draw(gr);
 

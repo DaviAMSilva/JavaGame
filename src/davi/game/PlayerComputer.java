@@ -1,18 +1,16 @@
 package davi.game;
 
+import static davi.game.GameData.*;
+
 public class PlayerComputer extends Player {
     public PlayerComputer(float x, float y, float width, float height, String name) {
         super(x, y, width, height, name);
 
-        this.stats[0] = this.ataqueComum = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Ataque Comum");
-        this.stats[1] = this.ataqueEspecial = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Ataque Especial");
-        this.stats[2] = this.defesaComum = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Defesa Comum");
-        this.stats[3] = this.defesaEspecial = new Stat(25.0f + GameData.random.nextInt(50), GameData.MAX_STAT_VALUE,
-                "Defesa Especial");
-        this.stats[4] = this.energia = new Stat(GameData.MAX_STAT_VALUE, GameData.MAX_STAT_VALUE, "Energia");
+        this.stats[0] = this.ataqueComum = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Ataque Comum");
+        this.stats[1] = this.ataqueEspecial = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Ataque Especial");
+        this.stats[2] = this.defesaComum = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Defesa Comum");
+        this.stats[3] = this.defesaEspecial = new Stat(25.0f + RANDOM.nextInt(50), MAX_STAT_VALUE, "Defesa Especial");
+        this.stats[4] = this.energia = new Stat(MAX_STAT_VALUE, MAX_STAT_VALUE, "Energia");
 
         // We don't need the energy button
         this.energia.setButton(null);
@@ -20,16 +18,16 @@ public class PlayerComputer extends Player {
 
     @Override
     public synchronized TurnResult play(String turnType) {
-        GameData.descriptionText.setText("Próximo a jogar: " + name);
-        waitTime(GameData.DEFAULT_DELAY);
+        gd_descriptionText.setText("Próximo a jogar: " + name);
+        waitTime(DEFAULT_DELAY);
 
         // Setting the visibility of the buttons based on the type of turn
-        if (turnType.equals(GameData.ATAQUE)) {
+        if (turnType.equals(ATAQUE)) {
             this.defesaComum.setButtonVisible(false);
             this.defesaEspecial.setButtonVisible(false);
             this.ataqueComum.setButtonVisible(true);
             this.ataqueEspecial.setButtonVisible(true);
-        } else if (turnType.equals(GameData.DEFESA)) {
+        } else if (turnType.equals(DEFESA)) {
             this.ataqueComum.setButtonVisible(false);
             this.ataqueEspecial.setButtonVisible(false);
             this.defesaComum.setButtonVisible(true);
@@ -48,44 +46,44 @@ public class PlayerComputer extends Player {
 
         Stat choice = null;
 
-        if (turnType.equals(GameData.ATAQUE)) {
-            if (GameData.random.nextBoolean()) {
+        if (turnType.equals(ATAQUE)) {
+            if (RANDOM.nextBoolean()) {
                 // Choosing randomly
-                if (GameData.random.nextBoolean()) {
+                if (RANDOM.nextBoolean()) {
                     choice = this.ataqueComum;
-                    type = GameData.COMUM;
+                    type = COMUM;
                 } else {
                     choice = this.ataqueEspecial;
-                    type = GameData.ESPECIAL;
+                    type = ESPECIAL;
                 }
             } else {
                 // Choosing the attack with the highest value
                 if (this.ataqueComum.getValue() > this.ataqueEspecial.getValue()) {
                     choice = this.ataqueComum;
-                    type = GameData.COMUM;
+                    type = COMUM;
                 } else {
                     choice = this.ataqueEspecial;
-                    type = GameData.ESPECIAL;
+                    type = ESPECIAL;
                 }
             }
-        } else if (turnType.equals(GameData.DEFESA)) {
-            if (GameData.random.nextBoolean()) {
+        } else if (turnType.equals(DEFESA)) {
+            if (RANDOM.nextBoolean()) {
                 // Choosing randomly
-                if (GameData.random.nextBoolean()) {
+                if (RANDOM.nextBoolean()) {
                     choice = this.defesaComum;
-                    type = GameData.COMUM;
+                    type = COMUM;
                 } else {
                     choice = this.defesaEspecial;
-                    type = GameData.ESPECIAL;
+                    type = ESPECIAL;
                 }
             } else {
                 // Choosing the attack with the highest value
                 if (this.defesaComum.getValue() > this.defesaEspecial.getValue()) {
                     choice = this.defesaComum;
-                    type = GameData.COMUM;
+                    type = COMUM;
                 } else {
                     choice = this.defesaEspecial;
-                    type = GameData.ESPECIAL;
+                    type = ESPECIAL;
                 }
             }
         } else {
@@ -95,8 +93,8 @@ public class PlayerComputer extends Player {
         choice.setButtonHighlighted(true);
         value = choice.getValue();
 
-        GameData.descriptionText.setText(name + " escolheu: " + turnType + " " + type + " (" + value + ")");
-        waitTime(GameData.DEFAULT_DELAY);
+        gd_descriptionText.setText(name + " escolheu: " + turnType + " " + type + " (" + value + ")");
+        waitTime(DEFAULT_DELAY);
 
         // For every stat decrease the value except for the one chosen
         for (Stat stat : stats) {
@@ -108,7 +106,7 @@ public class PlayerComputer extends Player {
         }
 
         // Remove energy
-        if (type.equals(GameData.ESPECIAL)) {
+        if (type.equals(ESPECIAL)) {
             energia.subtractValue(5);
         }
 
@@ -117,13 +115,13 @@ public class PlayerComputer extends Player {
 
     @Override
     public void draw(GameRenderer gr) {
-        if (state.equals(GameData.GANHADOR)) {
-            gr.tint(GameData.WINNER_TINT_COLOR);
-        } else if (state.equals(GameData.PERDEDOR)) {
-            gr.tint(GameData.LOSER_TINT_COLOR);
+        if (state.equals(GANHADOR)) {
+            gr.tint(WINNER_TINT_COLOR);
+        } else if (state.equals(PERDEDOR)) {
+            gr.tint(LOSER_TINT_COLOR);
         }
 
-        gr.image(GameData.computerPlayerImage, position.x, position.y, size.x, size.y);
+        gr.image(gd_computerPlayerImage, position.x, position.y, size.x, size.y);
 
         super.draw(gr);
 

@@ -3,10 +3,13 @@ package davi.game;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
+import static davi.game.GameData.*;
+import static davi.game.GameState.*;
+
 public class GameRenderer extends PApplet {
     @Override
     public synchronized void settings() {
-        size((int) GameData.SIZE.x, (int) GameData.SIZE.y);
+        size((int) SIZE.x, (int) SIZE.y);
     }
 
     @Override
@@ -19,100 +22,89 @@ public class GameRenderer extends PApplet {
 
     @Override
     public synchronized void draw() {
-        if (GameData.state == GameState.NAMING || GameData.state == GameState.STARTING) {
+        if (gd_state == NAMING || gd_state == STARTING) {
             drawStarting();
-        } else if (GameData.state == GameState.PLAYING) {
+        } else if (gd_state == PLAYING) {
             drawPlaying();
-        } else if (GameData.state == GameState.ENDING) {
+        } else if (gd_state == ENDING) {
             drawEnding();
         }
     }
 
     private void drawStarting() {
-        if (GameData.startingBackground != null)
-            image(GameData.startingBackground[(frameCount / 2) % GameData.startingBackground.length], 0, 0, width,
-                    height);
+        if (gd_startingBackground != null)
+            image(gd_startingBackground[(frameCount / 2) % gd_startingBackground.length], 0, 0, width, height);
 
         // Drawing the description
         textAlign(PConstants.LEFT, PConstants.CENTER);
-        GameData.descriptionText.draw(this);
+        gd_descriptionText.draw(this);
     }
 
     private void drawPlaying() {
         // Synchronizing because otherwise it causes problems
-        synchronized (GameData.MOUSE_POSITION) {
-            GameData.MOUSE_POSITION.x = mouseX;
-            GameData.MOUSE_POSITION.y = mouseY;
+        synchronized (gd_mousePosition) {
+            gd_mousePosition.x = mouseX;
+            gd_mousePosition.y = mouseY;
         }
-        synchronized (GameData.MOUSE_PRESSED) {
-            GameData.MOUSE_PRESSED = mousePressed;
+        synchronized (gd_mousePressed) {
+            gd_mousePressed = mousePressed;
         }
 
-        if (GameData.playingBackground != null)
-            image(GameData.playingBackground[(frameCount / 2) % GameData.playingBackground.length], 0, 0, width,
-                    height);
+        if (gd_playingBackground != null)
+            image(gd_playingBackground[(frameCount / 2) % gd_playingBackground.length], 0, 0, width, height);
 
-        for (Stat s : GameData.humanPlayer.getStats()) {
+        for (Stat s : gd_humanPlayer.getStats()) {
             s.draw(this);
         }
 
-        for (Stat s : GameData.computerPlayer.getStats()) {
+        for (Stat s : gd_computerPlayer.getStats()) {
             s.draw(this);
         }
 
-        GameData.humanPlayer.draw(this);
-        GameData.computerPlayer.draw(this);
+        gd_humanPlayer.draw(this);
+        gd_computerPlayer.draw(this);
 
         textAlign(PConstants.LEFT, PConstants.CENTER);
-        GameData.descriptionText.draw(this);
+        gd_descriptionText.draw(this);
     }
 
     private void drawEnding() {
-        if (GameData.playingBackground != null)
-            image(GameData.playingBackground[(frameCount / 2) % GameData.playingBackground.length], 0, 0, width,
-                    height);
+        if (gd_playingBackground != null)
+            image(gd_playingBackground[(frameCount / 2) % gd_playingBackground.length], 0, 0, width, height);
 
-        GameData.humanPlayer.draw(this);
-        GameData.computerPlayer.draw(this);
+        gd_humanPlayer.draw(this);
+        gd_computerPlayer.draw(this);
 
         textAlign(PConstants.CENTER, PConstants.CENTER);
-        GameData.descriptionText.draw(this);
+        gd_descriptionText.draw(this);
     }
 
     // Unfortunately, because this is the window that receives the key events,
     // we need to detect them here instead of in the GameUpdater thread
     @Override
     public synchronized void keyTyped() {
-        if (GameData.state == GameState.NAMING) {
-            // Add every key pressed to GameData.humanName
+        if (gd_state == NAMING) {
+            // Add every key pressed to humanName
             if (key == BACKSPACE) {
-                // Remove the last character from GameData.humanName
-                if (GameData.humanName.length() > 0) {
-                    GameData.humanName = GameData.humanName.substring(0, GameData.humanName.length() - 1);
+                // Remove the last character from humanName
+                if (gd_humanName.length() > 0) {
+                    gd_humanName = gd_humanName.substring(0, gd_humanName.length() - 1);
                 }
             } else if (key == ENTER) {
                 // Start the game
-                GameData.state = GameState.STARTING;
+                gd_state = STARTING;
             } else {
-                GameData.humanName += key;
-                if (GameData.humanName.length() > 20)
-                    GameData.humanName = GameData.humanName.substring(0, 20);
+                gd_humanName += key;
+                if (gd_humanName.length() > 20)
+                    gd_humanName = gd_humanName.substring(0, 20);
             }
-        } else if (GameData.state == GameState.PLAYING) {
+        } else if (gd_state == PLAYING) {
             // When the SPACE key is pressed the energy of both players is set to 1
             // Only for testing of course :)
             if (key == ' ') {
-                GameData.humanPlayer.setEnergyValue(1);
-                GameData.computerPlayer.setEnergyValue(1);
+                gd_humanPlayer.setEnergyValue(1);
+                gd_computerPlayer.setEnergyValue(1);
             }
-        }
-    }
-
-    public void waitTime(int millisecond) {
-        try {
-            Thread.sleep(millisecond);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -41,9 +41,6 @@ public record GameData() {
     public static final int MEDIUM_DELAY = 2500;
     public static final int LONG_DELAY = 5000;
 
-    public static PVector MOUSE_POSITION = new PVector();
-    public static Boolean MOUSE_PRESSED = false;
-
     public static final String ATAQUE = "ATAQUE";
     public static final String DEFESA = "DEFESA";
     public static final String COMUM = "COMUM";
@@ -52,21 +49,32 @@ public record GameData() {
     public static final String PERDEDOR = "PERDEDOR";
     public static final String NORMAL = "NORMAL";
 
-    public static String humanName = "";
+    public static final Random RANDOM = new Random();
 
-    public static PImage humanPlayerImage;
-    public static PImage computerPlayerImage;
+    public static PVector gd_mousePosition = new PVector();
+    public static Boolean gd_mousePressed = false;
 
-    public static PImage[] playingBackground;
-    public static PImage[] startingBackground;
+    public static String gd_humanName = "";
 
-    public static SoundFile music;
+    public static PImage gd_humanPlayerImage;
+    public static PImage gd_computerPlayerImage;
 
-    public static final Random random = new Random();
+    public static PImage[] gd_playingBackground;
+    public static PImage[] gd_startingBackground;
 
-    public static GameState state = GameState.NAMING;
+    public static SoundFile gd_music;
 
-    public static PlayerHuman humanPlayer = null;
-    public static PlayerComputer computerPlayer = null;
-    public static TextBox descriptionText = null;
+    public static GameState gd_state = GameState.NAMING;
+
+    public static PlayerHuman gd_humanPlayer;
+    public static PlayerComputer gd_computerPlayer;
+    public static TextBox gd_descriptionText;
+
+    public static void waitTime(int millisecond) {
+        try {
+            Thread.sleep(millisecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

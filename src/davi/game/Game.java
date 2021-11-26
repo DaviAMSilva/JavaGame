@@ -2,6 +2,8 @@ package davi.game;
 
 import processing.core.PApplet;
 
+import static davi.game.GameData.*;
+
 public class Game {
     public static void main(String[] args) {
         try {
@@ -16,44 +18,34 @@ public class Game {
             // ----------------------------------------------------------
 
             // Human
-            GameData.humanPlayer = new PlayerHuman(GameData.BORDER,
-                    GameData.SIZE.y - GameData.BORDER - GameData.PLAYER_SIZE.y, GameData.PLAYER_SIZE.x,
-                    GameData.PLAYER_SIZE.y, "JOGADOR");
+            gd_humanPlayer = new PlayerHuman(BORDER, SIZE.y - BORDER - PLAYER_SIZE.y, PLAYER_SIZE.x, PLAYER_SIZE.y,
+                    "JOGADOR");
 
             // Setting the human stats
-            for (int i = 0; i < GameData.humanPlayer.getStats().length; i++) {
-                GameData.humanPlayer.getStats()[i].setButtonDimensions(
-                        GameData.BORDER + GameData.PLAYER_SIZE.x + GameData.BUTTON_SPACING
-                                + i * (GameData.BUTTON_SIZE.x + GameData.BUTTON_SPACING),
-                        GameData.SIZE.y - GameData.BORDER - GameData.BUTTON_SIZE.y, GameData.BUTTON_SIZE.x,
-                        GameData.BUTTON_SIZE.y);
+            for (int i = 0; i < gd_humanPlayer.getStats().length; i++) {
+                gd_humanPlayer.getStats()[i].setButtonDimensions(
+                        BORDER + PLAYER_SIZE.x + BUTTON_SPACING + i * (BUTTON_SIZE.x + BUTTON_SPACING),
+                        SIZE.y - BORDER - BUTTON_SIZE.y, BUTTON_SIZE.x, BUTTON_SIZE.y);
 
-                GameData.humanPlayer.getStats()[i].setBarDimensions(
-                        GameData.SIZE.x - GameData.BORDER - GameData.BAR_SIZE.x,
-                        GameData.SIZE.y - GameData.BORDER - GameData.BAR_SIZE.y
-                                - i * (GameData.BAR_SIZE.y + GameData.BAR_SPACING),
-                        GameData.BAR_SIZE.x, GameData.BAR_SIZE.y);
+                gd_humanPlayer.getStats()[i].setBarDimensions(SIZE.x - BORDER - BAR_SIZE.x,
+                        SIZE.y - BORDER - BAR_SIZE.y - i * (BAR_SIZE.y + BAR_SPACING), BAR_SIZE.x, BAR_SIZE.y);
             }
 
             // Computer
-            GameData.computerPlayer = new PlayerComputer(GameData.SIZE.x - GameData.BORDER - GameData.PLAYER_SIZE.x,
-                    GameData.BORDER, GameData.PLAYER_SIZE.x, GameData.PLAYER_SIZE.y, "COMPUTADOR");
+            gd_computerPlayer = new PlayerComputer(SIZE.x - BORDER - PLAYER_SIZE.x, BORDER, PLAYER_SIZE.x,
+                    PLAYER_SIZE.y, "COMPUTADOR");
 
             // Setting the computer stats
-            for (int i = 0; i < GameData.computerPlayer.getStats().length; i++) {
-                GameData.computerPlayer.getStats()[i].setButtonDimensions(
-                        GameData.SIZE.x - GameData.BORDER - GameData.PLAYER_SIZE.x - GameData.BUTTON_SPACING
-                                - GameData.BUTTON_SIZE.x - i * (GameData.BUTTON_SIZE.x + GameData.BUTTON_SPACING),
-                        GameData.BORDER, GameData.BUTTON_SIZE.x, GameData.BUTTON_SIZE.y);
+            for (int i = 0; i < gd_computerPlayer.getStats().length; i++) {
+                gd_computerPlayer.getStats()[i].setButtonDimensions(SIZE.x - BORDER - PLAYER_SIZE.x - BUTTON_SPACING
+                        - BUTTON_SIZE.x - i * (BUTTON_SIZE.x + BUTTON_SPACING), BORDER, BUTTON_SIZE.x, BUTTON_SIZE.y);
 
-                GameData.computerPlayer.getStats()[i].setBarDimensions(GameData.BORDER,
-                        GameData.BORDER + i * (GameData.BAR_SIZE.y + GameData.BAR_SPACING), GameData.BAR_SIZE.x,
-                        GameData.BAR_SIZE.y);
+                gd_computerPlayer.getStats()[i].setBarDimensions(BORDER, BORDER + i * (BAR_SIZE.y + BAR_SPACING),
+                        BAR_SIZE.x, BAR_SIZE.y);
             }
 
             // Text Box
-            GameData.descriptionText = new TextBox(GameData.BORDER, GameData.SIZE.y / 2, GameData.SIZE.x / 2,
-                    GameData.TEXTBOX_TEXT_SIZE, "");
+            gd_descriptionText = new TextBox(BORDER, SIZE.y / 2, SIZE.x / 2, TEXTBOX_TEXT_SIZE, "");
             // ----------------------------------------------------------
 
             // Starting the sketches

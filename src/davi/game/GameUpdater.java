@@ -4,6 +4,9 @@ import gifAnimation.Gif;
 import processing.core.PApplet;
 import processing.sound.SoundFile;
 
+import static davi.game.GameData.*;
+import static davi.game.GameState.*;
+
 public class GameUpdater extends PApplet {
     @Override
     public void setup() {
@@ -15,14 +18,14 @@ public class GameUpdater extends PApplet {
     public synchronized void settings() {
         // Loading the images
         try {
-            GameData.humanPlayerImage = loadImage("data/Human.png");
-            GameData.computerPlayerImage = loadImage("data/Computer.png");
+            gd_humanPlayerImage = loadImage("data/Human.png");
+            gd_computerPlayerImage = loadImage("data/Computer.png");
 
-            GameData.playingBackground = Gif.getPImages(this, "data/PlayingBackground.gif");
-            GameData.startingBackground = Gif.getPImages(this, "data/StartingBackground.gif");
+            gd_playingBackground = Gif.getPImages(this, "data/PlayingBackground.gif");
+            gd_startingBackground = Gif.getPImages(this, "data/StartingBackground.gif");
 
-            GameData.music = new SoundFile(this, "data/09battle2.wav");
-            GameData.music.loop();
+            gd_music = new SoundFile(this, "data/09battle2.wav");
+            gd_music.loop();
         } catch (Exception e) {
             System.out.println("Error loading data");
         }
@@ -30,35 +33,34 @@ public class GameUpdater extends PApplet {
 
     @Override
     public synchronized void draw() {
-        if (GameData.state == GameState.NAMING) {
+        if (gd_state == NAMING) {
             namingDraw();
-        } else if (GameData.state == GameState.STARTING) {
+        } else if (gd_state == STARTING) {
             startingDraw();
-        } else if (GameData.state == GameState.PLAYING) {
+        } else if (gd_state == PLAYING) {
             playingDraw();
         }
     }
 
     private synchronized void namingDraw() {
         if ((frameCount / 60) % 2 == 0) {
-            GameData.descriptionText
-                    .setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName + "_");
+            gd_descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + gd_humanName + "_");
         } else {
-            GameData.descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + GameData.humanName);
+            gd_descriptionText.setText("A sua aventura começa aqui!\nQual o seu nome?\n> " + gd_humanName);
         }
     }
 
     private synchronized void startingDraw() {
-        if (GameData.humanName.equals("")) {
-            GameData.humanPlayer.setName("HUMANO");
+        if (gd_humanName.equals("")) {
+            gd_humanPlayer.setName("HUMANO");
         } else {
-            GameData.humanPlayer.setName(GameData.humanName);
+            gd_humanPlayer.setName(gd_humanName);
         }
 
-        GameData.descriptionText.setText("Que o jogo comece!");
-        waitTime(GameData.MEDIUM_DELAY);
+        gd_descriptionText.setText("Que o jogo comece!");
+        waitTime(MEDIUM_DELAY);
 
-        GameData.state = GameState.PLAYING;
+        gd_state = PLAYING;
     }
 
     private synchronized void playingDraw() {
@@ -66,36 +68,36 @@ public class GameUpdater extends PApplet {
         Player defender;
 
         if (frameCount % 2 == 1) {
-            attacker = GameData.humanPlayer;
-            defender = GameData.computerPlayer;
+            attacker = gd_humanPlayer;
+            defender = gd_computerPlayer;
         } else {
-            attacker = GameData.computerPlayer;
-            defender = GameData.humanPlayer;
+            attacker = gd_computerPlayer;
+            defender = gd_humanPlayer;
         }
 
-        GameData.descriptionText.setText("Próxima rodada!");
-        waitTime(GameData.DEFAULT_DELAY);
+        gd_descriptionText.setText("Próxima rodada!");
+        waitTime(DEFAULT_DELAY);
 
-        TurnResult attackerResult = attacker.play(GameData.ATAQUE);
-        TurnResult defenderResult = defender.play(GameData.DEFESA);
+        TurnResult attackerResult = attacker.play(ATAQUE);
+        TurnResult defenderResult = defender.play(DEFESA);
 
         if (attackerResult.getType().equals(defenderResult.getType())) {
             // If of the same type, the attacker wins if it has more value
             if (attackerResult.getValue() > defenderResult.getValue()) {
                 defender.subtractEnergy(attackerResult.getValue() - defenderResult.getValue());
-                GameData.descriptionText.setText(attacker.getName() + " atacou! ("
+                gd_descriptionText.setText(attacker.getName() + " atacou! ("
                         + (attackerResult.getValue() - defenderResult.getValue()) + ")");
             } else {
-                GameData.descriptionText.setText(defender.getName() + " se defendeu!");
+                gd_descriptionText.setText(defender.getName() + " se defendeu!");
             }
         } else {
             // If of different types, the attacker wins a third of the value
             defender.subtractEnergy(attackerResult.getValue() / 3);
 
-            GameData.descriptionText.setText(attacker.getName() + " atacou! (" + (attackerResult.getValue() / 3) + ")");
+            gd_descriptionText.setText(attacker.getName() + " atacou! (" + (attackerResult.getValue() / 3) + ")");
         }
 
-        waitTime(GameData.DEFAULT_DELAY);
+        waitTime(DEFAULT_DELAY);
 
         for (Stat stat : attacker.getStats()) {
             stat.setButtonHighlighted(false);
@@ -107,27 +109,18 @@ public class GameUpdater extends PApplet {
 
         // If the defender has no energy, the attacker wins
         if (defender.getEnergyValue() <= 0) {
-            GameData.descriptionText
-                    .setText(defender.getName() + " foi eliminado! " + attacker.getName() + " é o vencedor!");
+            gd_descriptionText.setText(defender.getName() + " foi eliminado! " + attacker.getName() + " é o vencedor!");
 
-            GameData.descriptionText.setPosition(GameData.SIZE.x / 2, GameData.SIZE.y / 2);
+            gd_descriptionText.setPosition(SIZE.x / 2, SIZE.y / 2);
 
-            attacker.setState(GameData.GANHADOR);
-            defender.setState(GameData.PERDEDOR);
+            attacker.setState(GANHADOR);
+            defender.setState(PERDEDOR);
 
-            GameData.state = GameState.ENDING;
+            gd_state = ENDING;
 
-            waitTime(GameData.LONG_DELAY);
+            waitTime(LONG_DELAY);
 
-            GameData.descriptionText.setText("Obrigado por Jogar!!!");
-        }
-    }
-
-    public void waitTime(int millisecond) {
-        try {
-            Thread.sleep(millisecond);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            gd_descriptionText.setText("Obrigado por Jogar!!!");
         }
     }
 }
